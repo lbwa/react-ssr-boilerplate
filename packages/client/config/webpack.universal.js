@@ -13,7 +13,7 @@ const universal = {
   output: {
     path: resolveApp(`../dist`),
     publicPath: `/public/`,
-    filename: `[name].[${__DEV__ ? `hash` : `contenthash`}:8].js`,
+    filename: `[name].[${__DEV__ ? `hash` : `contenthash`}:8].js`
   },
 
   module: {},
@@ -21,13 +21,13 @@ const universal = {
   plugins: [
     new webpack.DefinePlugin({
       __DEV__: JSON.stringify(__DEV__),
-      __VERSION__: JSON.stringify(require(`../package.json`).version),
-    }),
+      __VERSION__: JSON.stringify(require(`../package.json`).version)
+    })
   ],
 
   resolve: {
-    extensions: [`.ts`, `.tsx`],
-  },
+    extensions: [`.ts`, `.tsx`]
+  }
 }
 
 module.exports = universal

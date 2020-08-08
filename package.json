@@ -8,6 +8,7 @@
   "description": "React.js server-side rendering boilerplate",
   "main": "index.js",
   "scripts": {
+    "lint": "prettier --write packages/**/*.{js,jsx,ts,tsx,json,css,scss,md}",
     "test": "exit 1"
   },
   "repository": {
