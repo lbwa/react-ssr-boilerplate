@@ -18,13 +18,46 @@
     "React.js",
     "server-side-rendering"
   ],
-  "author": "lbwa",
+  "author": "Bowen Liu <vnode@outlook.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/lbwa/react-ssr-boilerplate/issues"
   },
   "homepage": "https://github.com/lbwa/react-ssr-boilerplate#readme",
   "devDependencies": {
-    "lerna": "^3.22.1"
+    "husky": "^4.2.5",
+    "lerna": "^3.22.1",
+    "lint-staged": "^10.2.11",
+    "prettier": "^2.0.5"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": false,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "none",
+    "useTabs": false
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "packages/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
+    ]
   }
 }
