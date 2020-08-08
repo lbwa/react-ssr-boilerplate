@@ -1,0 +1,30 @@
+{
+  "name": "react-ssr-boilerplate",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "description": "React.js server-side rendering boilerplate",
+  "main": "index.js",
+  "scripts": {
+    "test": "exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lbwa/react-ssr-boilerplate.git"
+  },
+  "keywords": [
+    "React.js",
+    "server-side-rendering"
+  ],
+  "author": "lbwa",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lbwa/react-ssr-boilerplate/issues"
+  },
+  "homepage": "https://github.com/lbwa/react-ssr-boilerplate#readme",
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  }
+}
