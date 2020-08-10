@@ -5,12 +5,15 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const InlineChunkHtmlPlugin = require(`../utils/inline-chunk-html-plugin`)
 const InterpolateHtmlPlugin = require(`../utils/interpolate-html-plugin`)
 const paths = require(`./paths`)
+const { getClientEnvironment } = require(`../utils/set-env`)
 
 const useSourceMap = process.env.CREATE_SOURCE_MAP !== `false`
 
 module.exports = function createWebpackConfig(mode) {
   const isEnvDevelopment = mode === `development`
   const isEnvProduction = mode === `production`
+
+  const env = getClientEnvironment(paths.publicUrl)
 
   return {
     mode: isEnvProduction ? `production` : isEnvDevelopment && `development`,
@@ -110,21 +113,10 @@ module.exports = function createWebpackConfig(mode) {
       isEnvProduction &&
         new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime-.+[.]js/]),
       // make specific environment variables available in index.html
-      new InterpolateHtmlPlugin(
-        HtmlWebpackPlugin,
-        // TODO: migrate all env variables to single file
-        {
-          PUBLIC_URL: paths.publicUrl
-        }
-      ),
+      new InterpolateHtmlPlugin(HtmlWebpackPlugin, env.raw),
 
       // make specific environment variables available in the JS code
-      new webpack.DefinePlugin(
-        // TODO: migrate all env variables to single file
-        {
-          __DEV__: JSON.stringify(process.env.NODE_ENV === `development`)
-        }
-      ),
+      new webpack.DefinePlugin(env.stringified),
 
       // TODO: HotModuleReplacementPlugin in development
       // TODO: mini-css-extract-plugin in production

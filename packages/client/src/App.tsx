@@ -1,5 +1,11 @@
 import React from 'react'
 
+const availableEnv = {
+  __DEV__,
+  NODE_ENV: process.env.NODE_ENV,
+  SSR_CLIENT_: process.env.SSR_CLIENT_KEY
+}
+
 const App: React.FC = () => {
   return (
     <>
@@ -7,10 +13,14 @@ const App: React.FC = () => {
       <section onClick={() => console.log(`clicked !`)}>
         <h3>available global env variables</h3>
         <ul>
-          <li>
-            <label>__DEV__</label>
-            <span>{JSON.stringify(__DEV__)}</span>
-          </li>
+          {(Object.keys(availableEnv) as (keyof typeof availableEnv)[]).map(
+            (key) => (
+              <li>
+                <span key={key}>{key}</span>
+                <span>{JSON.stringify(availableEnv[key])}</span>
+              </li>
+            )
+          )}
         </ul>
       </section>
       <footer>
