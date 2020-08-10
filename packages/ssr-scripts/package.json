@@ -1,0 +1,51 @@
+{
+  "name": "@lbwa/ssr-scripts",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SSR boilerplate bundler",
+  "keywords": [
+    "ssr",
+    "js-bundler"
+  ],
+  "author": "Bowen Liu <vnode@outlook.com> (https://github.com/lbwa)",
+  "homepage": "https://github.com/lbwa/react-ssr-boilerplate/tree/master/packages/ssr-scripts#readme",
+  "license": "MIT",
+  "bin": {
+    "ssr-scripts": "./bin/ssr-scripts"
+  },
+  "directories": {
+    "bin": "bin",
+    "lib": "scripts",
+    "test": "__tests__"
+  },
+  "files": [
+    "bin",
+    "config",
+    "scripts"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npm.taobao.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lbwa/react-ssr-boilerplate.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "dependencies": {
+    "@babel/core": "^7.11.1",
+    "babel-loader": "^8.1.0",
+    "babel-preset-react-app": "^9.1.2",
+    "cross-spawn": "^7.0.3",
+    "escape-string-regexp": "^4.0.0",
+    "fork-ts-checker-webpack-plugin": "^5.0.14",
+    "fs-extra": "^9.0.1",
+    "html-webpack-plugin": "^4.3.0",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
+  },
+  "bugs": {
+    "url": "https://github.com/lbwa/react-ssr-boilerplate/issues"
+  }
+}
