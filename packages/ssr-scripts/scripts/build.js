@@ -1,26 +1,25 @@
 process.env.BABEL_ENV = `production`
-process.env.NODE_EVN = `production`
+process.env.NODE_ENV = `production`
 
 process.on(`unhandledRejection`, (err) => {
   throw err
 })
 
+// ensure environment variables available.
+require(`../utils/set-env`)
+
 const webpack = require(`webpack`)
 const fs = require(`fs-extra`)
+const chalk = require(`chalk`)
 const paths = require(`../config/paths`)
 const configFactory = require(`../config/webpack.universal`)
-
-function formatWebpackMessages(json) {
-  return json
-}
 
 // configurations
 const config = configFactory(`production`)
 
 // production building process
-
 function build() {
-  console.info(`Create a production build ...`)
+  console.info(chalk.blue(`Create a production build ...`))
 
   const compiler = webpack(config)
   return new Promise((resolve, reject) => {
@@ -33,14 +32,12 @@ function build() {
 
         let errMessage = err.message
 
-        messages = formatWebpackMessages({
+        messages = {
           errors: [errMessage],
           warnings: []
-        })
+        }
       } else {
-        messages = formatWebpackMessages(
-          stats.toJson({ all: false, warnings: true, errors: true })
-        )
+        messages = stats.toJson({ all: false, warnings: true, errors: true })
       }
 
       if (messages.errors.length) {
@@ -70,9 +67,10 @@ function copyPublicFolder() {
 fs.emptyDirSync(paths.appBuild)
 copyPublicFolder()
 build()
-  .then(() => console.log(`Build completed.`))
+  .then(() => console.log(chalk.green(`Compiled successfully.\n`)))
   .catch((err) => {
     if (err && err.message) {
+      console.log(chalk.red(`Compiled with errors.\n`))
       console.log(err.message)
     }
     process.exit(1)

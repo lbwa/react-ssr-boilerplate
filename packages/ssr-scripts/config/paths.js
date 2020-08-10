@@ -9,6 +9,7 @@ const publicUrl =
   require(resolveApp(`package.json`)).homepage || process.env.PUBLIC_URL || `/`
 
 module.exports = {
+  dotenv: resolveApp(`.env`),
   appPath: resolveApp(`.`),
   appBuild: resolveApp(`dist`),
   appPublic: resolveApp(`public`),
