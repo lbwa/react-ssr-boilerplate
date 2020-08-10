@@ -2,8 +2,8 @@ const path = require(`path`)
 const webpack = require(`webpack`)
 const HtmlWebpackPlugin = require(`html-webpack-plugin`)
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
-const InlineChunkHtmlPlugin = require(`./inline-chunk-html-plugin`)
-const InterpolateHtmlPlugin = require(`./interpolate-html-plugin`)
+const InlineChunkHtmlPlugin = require(`../utils/inline-chunk-html-plugin`)
+const InterpolateHtmlPlugin = require(`../utils/interpolate-html-plugin`)
 const paths = require(`./paths`)
 
 const useSourceMap = process.env.CREATE_SOURCE_MAP !== `false`
