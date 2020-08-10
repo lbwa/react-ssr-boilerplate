@@ -1,5 +1,7 @@
 import React from 'react'
 
+import './app.css'
+
 const availableEnv = {
   __DEV__,
   NODE_ENV: process.env.NODE_ENV,
