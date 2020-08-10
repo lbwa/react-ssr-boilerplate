@@ -4,8 +4,8 @@ import './app.css'
 
 const availableEnv = {
   __DEV__,
-  NODE_ENV: process.env.NODE_ENV,
-  SSR_APP_: process.env.SSR_APP_KEY
+  'process.env.NODE_ENV': process.env.NODE_ENV,
+  'process.env.SSR_APP_*': process.env.SSR_APP_KEY
 }
 
 const App: React.FC = () => {
@@ -18,7 +18,7 @@ const App: React.FC = () => {
           {(Object.keys(availableEnv) as (keyof typeof availableEnv)[]).map(
             (key) => (
               <li>
-                <span key={key}>{key}</span>
+                <span key={key}>{key}</span>:&nbsp;
                 <span>{JSON.stringify(availableEnv[key])}</span>
               </li>
             )
