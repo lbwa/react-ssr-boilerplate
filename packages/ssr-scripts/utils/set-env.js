@@ -31,7 +31,7 @@ dotenvFiles.forEach((file) => {
   }
 })
 
-const CLIENT_AVAILABLE_ENV_PREFIX = /^SSR_CLIENT_/i
+const CLIENT_AVAILABLE_ENV_PREFIX = /^SSR_APP_/i
 exports.getClientEnvironment = function (publicUrl) {
   const raw = Object.keys(process.env)
     .filter((key) => CLIENT_AVAILABLE_ENV_PREFIX.test(key))

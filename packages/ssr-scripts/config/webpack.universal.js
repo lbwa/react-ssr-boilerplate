@@ -68,7 +68,10 @@ module.exports = function createWebpackConfig(mode) {
       rules: [
         // disable require.ensure, use `import()` instead
         { parser: { requireEnsure: false } },
-        // TODO: add eslint-loader
+        // babel with plugins(preset) only support the typescript syntax
+        // without type-check. we'll use fork-ts-checker-webpack-plugin to
+        // speedup type-check process.
+        // https://babeljs.io/docs/en/babel-plugin-transform-typescript
         {
           test: /\.(js|mjs|jsx|ts|tsx)$/,
           include: path.appSrc,
@@ -82,6 +85,7 @@ module.exports = function createWebpackConfig(mode) {
             compact: isEnvProduction
           }
         }
+        // TODO: add eslint-loader
       ]
     },
 
@@ -114,13 +118,8 @@ module.exports = function createWebpackConfig(mode) {
         new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime-.+[.]js/]),
       // make specific environment variables available in index.html
       new InterpolateHtmlPlugin(HtmlWebpackPlugin, env.raw),
-
       // make specific environment variables available in the JS code
       new webpack.DefinePlugin(env.stringified),
-
-      // TODO: HotModuleReplacementPlugin in development
-      // TODO: mini-css-extract-plugin in production
-
       // speedup type checking in a separate processing
       new ForkTsCheckerWebpackPlugin({
         typescript: {
@@ -129,6 +128,9 @@ module.exports = function createWebpackConfig(mode) {
         },
         async: isEnvDevelopment
       })
+
+      // TODO: HotModuleReplacementPlugin in development
+      // TODO: mini-css-extract-plugin in production
     ].filter(Boolean),
 
     node: {

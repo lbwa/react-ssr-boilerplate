@@ -3,7 +3,7 @@ import React from 'react'
 const availableEnv = {
   __DEV__,
   NODE_ENV: process.env.NODE_ENV,
-  SSR_CLIENT_: process.env.SSR_CLIENT_KEY
+  SSR_APP_: process.env.SSR_APP_KEY
 }
 
 const App: React.FC = () => {
