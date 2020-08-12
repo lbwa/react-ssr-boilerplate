@@ -24,6 +24,7 @@
     "url": "git+https://github.com/lbwa/react-ssr-boilerplate.git"
   },
   "scripts": {
+    "start": "ssr-scripts start",
     "build": "ssr-scripts build",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
@@ -35,6 +36,7 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
+    "@lbwa/ssr-scripts": "^0.1.0",
     "@types/react": "^16.9.45",
     "@types/react-dom": "^16.9.8",
     "react": "^16.13.1",
