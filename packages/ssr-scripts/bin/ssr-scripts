@@ -8,11 +8,13 @@ process.on(`unhandledRejection`, (err) => {
 
 const args = process.argv.slice(2)
 
-const scriptIndex = args.findIndex((script) => script === `build`)
+const scriptIndex = args.findIndex(
+  (script) => script === `start` || script === `build`
+)
 const script = scriptIndex === -1 ? args[0] : args[scriptIndex]
 const nodeArgs = scriptIndex > 0 ? args.slice(0, scriptIndex) : []
 
-if ([`build`].includes(script)) {
+if ([`start`, `build`].includes(script)) {
   // https://nodejs.org/api/child_process.html#child_process_child_process_spawnsync_command_args_options
   const result = spawn.sync(
     process.execPath,
@@ -27,5 +29,6 @@ if ([`build`].includes(script)) {
   }
   process.exit(result.status)
 } else {
-  console.info(`Unknown scripts ${script}`)
+  console.info(chalk.red(`Unknown scripts ${script}`))
+  process.exit(1)
 }

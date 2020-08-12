@@ -12,7 +12,7 @@ const webpack = require(`webpack`)
 const fs = require(`fs-extra`)
 const chalk = require(`chalk`)
 const paths = require(`../config/paths`)
-const configFactory = require(`../config/webpack.universal`)
+const configFactory = require(`../config/webpack.client`)
 
 // configurations
 const config = configFactory(`production`)
@@ -37,10 +37,13 @@ function build() {
           warnings: []
         }
       } else {
+        // All available options: https://webpack.js.org/configuration/stats/
         messages = stats.toJson({ all: false, warnings: true, errors: true })
       }
 
       if (messages.errors.length) {
+        // Only keep the first error. Others are often  indicative of the same
+        // problem, but confuse the reader with noise.
         if (messages.errors.length > 1) {
           messages.errors.length = 1
         }
@@ -67,10 +70,34 @@ function copyPublicFolder() {
 fs.emptyDirSync(paths.appBuild)
 copyPublicFolder()
 build()
-  .then(() => console.log(chalk.green(`Compiled successfully.\n`)))
+  .then(({ stats, warnings }) => {
+    if (warnings.length) {
+      console.log(chalk.yellow(`Compiled with warning.\n`))
+      console.log(warnings.join(`\n\n`))
+      console.log(
+        '\nSearch for the ' +
+          chalk.underline(chalk.yellow(`keywords`)) +
+          ' to learn more about each warning.'
+      )
+    } else {
+      console.log(
+        // All available options: https://webpack.js.org/configuration/stats/
+        stats.toString(
+          Object.assign({
+            assets: true,
+            colors: true,
+            hash: true,
+            timings: true,
+            version: true
+          })
+        )
+      )
+      console.log(chalk.green(`\nCompiled successfully.\n`))
+    }
+  })
   .catch((err) => {
     if (err && err.message) {
-      console.log(chalk.red(`Compiled with errors.\n`))
+      console.log(chalk.red(`Compiled with error.\n`))
       console.log(err.message)
     }
     process.exit(1)

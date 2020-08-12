@@ -3,7 +3,6 @@ const webpack = require(`webpack`)
 const HtmlWebpackPlugin = require(`html-webpack-plugin`)
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const MiniCssExtractPlugin = require(`mini-css-extract-plugin`)
-const OptimizeCssAssetsPlugin = require(`optimize-css-assets-webpack-plugin`)
 const InlineChunkHtmlPlugin = require(`../utils/inline-chunk-html-plugin`)
 const InterpolateHtmlPlugin = require(`../utils/interpolate-html-plugin`)
 const paths = require(`./paths`)
@@ -11,10 +10,10 @@ const { getClientEnvironment } = require(`../utils/set-env`)
 
 const useSourceMap = process.env.CREATE_SOURCE_MAP !== `false`
 
-module.exports = function createWebpackConfig(mode) {
+module.exports = function createUniversalConfig(mode) {
   const isEnvDevelopment = mode === `development`
   const isEnvProduction = mode === `production`
-  const env = getClientEnvironment(paths.publicUrl)
+  const env = getClientEnvironment(paths.publicUrl.replace(/\/$/, ''))
 
   function getStyleLoader(cssOptions) {
     const loaders = [
@@ -53,72 +52,13 @@ module.exports = function createWebpackConfig(mode) {
   return {
     mode: isEnvProduction ? `production` : isEnvDevelopment && `development`,
 
+    // fail out the first error instead of tolerating it. This will force
+    // webpack to exit its bundling process.
     bail: isEnvProduction,
-
-    devtool: isEnvProduction
-      ? useSourceMap
-        ? `source-map`
-        : false
-      : isEnvDevelopment && `cheap-module-source-map`,
-
-    entry: [
-      // TODO: add `webpack-hot-middleware/client` entry for development
-      // universal application entry
-      paths.appEntry
-    ].filter(Boolean),
-
-    output: {
-      path: isEnvProduction ? paths.appBuild : undefined,
-      pathinfo: isEnvDevelopment,
-      filename: isEnvProduction
-        ? `static/js/[name].[contenthash:8].js`
-        : isEnvDevelopment && `[name].[hash:8].js`,
-      chunkFilename: isEnvProduction
-        ? `static/js/[name].[contenthash:8].chunk.js`
-        : isEnvDevelopment && `[name].[hash:8].chunk.js`,
-      publicPath: paths.publicUrl,
-      globalObject: `this`
-    },
-
-    optimization: {
-      minimize: isEnvProduction,
-      minimizer: [
-        // Only used in production mode
-        new OptimizeCssAssetsPlugin({
-          // This options passed to the cssProcessor(default is `cssnano`)
-          cssProcessorOptions: {
-            map: useSourceMap
-              ? {
-                  // `inline: false` forces the source map to be output into a
-                  // separate file
-                  inline: false,
-                  // appends the sourceMappingURL to the end of the css file,
-                  // helping the browser find the source map
-                  annotation: true
-                }
-              : false
-          },
-          // The plugin options passed to the cssProcess
-          cssProcessorPluginOptions: {
-            presets: [`default`, { minifyFontValues: { removeQuotes: false } }]
-          }
-        })
-      ],
-      splitChunks: {
-        chunks: `all`, // all `initial` and `async` chunks
-        name: false
-      },
-      runtimeChunk: {
-        name: (entry) => `runtime-${entry.name}`
-      }
-    },
 
     resolve: {
       extensions: paths.moduleFileExtensions.map((ext) => `.${ext}`),
-      alias: {
-        'react-dom$': `react-dom/profiling`,
-        'scheduler/tracing': `scheduler/tracing-profiling`
-      }
+      alias: {}
     },
 
     module: {
@@ -237,9 +177,6 @@ module.exports = function createWebpackConfig(mode) {
           filename: `static/css/[name].[contenthash:8].css`,
           chunkFilename: `static/css/[name].[contenthash:8].chunk.css`
         })
-
-      // TODO: HotModuleReplacementPlugin in development
-      // TODO: mini-css-extract-plugin in production
     ].filter(Boolean),
 
     node: {
