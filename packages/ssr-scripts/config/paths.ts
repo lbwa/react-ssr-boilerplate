@@ -1,12 +1,11 @@
-const path = require(`path`)
-const fs = require(`fs`)
-const { URL } = require(`url`)
+import path from 'path'
+import fs from 'fs'
+import { URL } from 'url'
 
 const appDir = fs.realpathSync(process.cwd())
-const resolveApp = (relativePath) => path.resolve(appDir, relativePath)
+const resolveApp = (relativePath: string) => path.resolve(appDir, relativePath)
 
-const moduleFileExtensions = [`js`, `jsx`, `ts`, `tsx`, `json`]
-const homepage = require(resolveApp(`package.json`)).homepage
+const homepage: string = require(resolveApp(`package.json`)).homepage
 const publicUrl =
   process.env.NODE_ENV === `development`
     ? homepage.startsWith('.')
@@ -16,7 +15,8 @@ const publicUrl =
     ? homepage
     : new URL(homepage || process.env.PUBLIC_URL || `/`).pathname
 
-module.exports = {
+export const moduleFileExtensions = [`js`, `jsx`, `ts`, `tsx`, `json`]
+export default {
   dotenv: resolveApp(`.env`),
   appPath: resolveApp(`.`),
   appBuild: resolveApp(`dist`),
@@ -29,5 +29,3 @@ module.exports = {
   appNodeModules: resolveApp(`node_modules`),
   publicUrl
 }
-
-module.exports.moduleFileExtensions = moduleFileExtensions

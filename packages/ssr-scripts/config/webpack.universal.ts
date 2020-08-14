@@ -1,21 +1,19 @@
-const path = require(`path`)
-const webpack = require(`webpack`)
-const HtmlWebpackPlugin = require(`html-webpack-plugin`)
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
-const MiniCssExtractPlugin = require(`mini-css-extract-plugin`)
-const InlineChunkHtmlPlugin = require(`../utils/inline-chunk-html-plugin`)
-const InterpolateHtmlPlugin = require(`../utils/interpolate-html-plugin`)
-const paths = require(`./paths`)
-const { getClientEnvironment } = require(`../utils/set-env`)
+import webpack from 'webpack'
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+import paths, { moduleFileExtensions } from './paths'
+import { getClientEnvironment } from '../utils/set-env'
 
 const useSourceMap = process.env.CREATE_SOURCE_MAP !== `false`
 
-module.exports = function createUniversalConfig(mode) {
+export default function createUniversalConfig(
+  mode: `development` | `production`
+): webpack.Configuration {
   const isEnvDevelopment = mode === `development`
   const isEnvProduction = mode === `production`
   const env = getClientEnvironment(paths.publicUrl.replace(/\/$/, ''))
 
-  function getStyleLoader(cssOptions) {
+  function getStyleLoader(cssOptions: object) {
     const loaders = [
       isEnvDevelopment && require.resolve(`style-loader`),
       isEnvProduction && {
@@ -44,20 +42,24 @@ module.exports = function createUniversalConfig(mode) {
           sourceMap: isEnvProduction && useSourceMap
         }
       }
-    ].filter(Boolean)
+    ].filter(Boolean) as webpack.RuleSetRule['use']
 
     return loaders
   }
 
   return {
-    mode: isEnvProduction ? `production` : isEnvDevelopment && `development`,
+    mode: (isEnvProduction
+      ? `production`
+      : isEnvDevelopment
+      ? `development`
+      : 'none') as `development` | `production` | `none` | undefined,
 
     // fail out the first error instead of tolerating it. This will force
     // webpack to exit its bundling process.
     bail: isEnvProduction,
 
     resolve: {
-      extensions: paths.moduleFileExtensions.map((ext) => `.${ext}`),
+      extensions: moduleFileExtensions.map((ext) => `.${ext}`),
       alias: {}
     },
 
@@ -77,7 +79,7 @@ module.exports = function createUniversalConfig(mode) {
             {
               test: /\.(js|mjs|jsx|ts|tsx)$/,
               // compile application code
-              include: path.appSrc,
+              include: paths.appSrc,
               loader: require.resolve(`babel-loader`),
               options: {
                 presets: [require.resolve(`babel-preset-react-app`)],
@@ -134,34 +136,6 @@ module.exports = function createUniversalConfig(mode) {
     },
 
     plugins: [
-      new webpack.ProgressPlugin(),
-      new HtmlWebpackPlugin(
-        Object.assign(
-          { inject: true, template: paths.appHtml },
-          isEnvProduction
-            ? {
-                minify: {
-                  removeComments: true,
-                  collapseWhitespace: true,
-                  removeRedundantAttributes: true,
-                  useShortDoctype: true,
-                  removeEmptyAttributes: true,
-                  removeStyleLinkTypeAttributes: true,
-                  keepClosingSlash: true,
-                  minifyJS: true,
-                  minifyCSS: true,
-                  minifyURLs: true
-                }
-              }
-            : undefined
-        )
-      ),
-      // inline the webpack runtime chunk, this script is too small to warrant a
-      // network request.
-      isEnvProduction &&
-        new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime-.+[.]js/]),
-      // make specific environment variables available in index.html
-      new InterpolateHtmlPlugin(HtmlWebpackPlugin, env.raw),
       // make specific environment variables available in the JS code
       new webpack.DefinePlugin(env.stringified),
       // speedup type checking in a separate processing
@@ -177,7 +151,7 @@ module.exports = function createUniversalConfig(mode) {
           filename: `static/css/[name].[contenthash:8].css`,
           chunkFilename: `static/css/[name].[contenthash:8].chunk.css`
         })
-    ].filter(Boolean),
+    ].filter(Boolean) as webpack.Plugin[],
 
     node: {
       module: `empty`,
