@@ -8,7 +8,7 @@ process.on('unhandledRejection', (err) => {
 })
 
 function isValidCommand(script: string) {
-  return [`start`, `build`].includes(script)
+  return [`start`, `build`, `build-server`].includes(script)
 }
 
 const args = process.argv.slice(2)
