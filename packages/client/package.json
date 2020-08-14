@@ -32,7 +32,6 @@
     "url": "https://github.com/lbwa/react-ssr-boilerplate/issues"
   },
   "devDependencies": {
-    "@lbwa/ssr-scripts": "^0.1.0",
     "typescript": "^3.9.7"
   },
   "dependencies": {
