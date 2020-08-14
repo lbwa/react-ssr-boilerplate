@@ -8,6 +8,9 @@
   "description": "React.js server-side rendering boilerplate",
   "main": "index.js",
   "scripts": {
+    "compile": "lerna run --parallel --stream compile",
+    "watch": "lerna run --parallel --stream watch",
+    "build": "lerna run --parallel --stream build",
     "lint": "prettier --write packages/**/*.{js,jsx,ts,tsx,json,css,scss,md}",
     "test": "exit 1"
   },

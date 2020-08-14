@@ -26,6 +26,8 @@
   "scripts": {
     "start": "ssr-scripts start",
     "build": "ssr-scripts build",
+    "watch": "ssr-scripts start",
+    "build-server": "ssr-scripts build-server",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
