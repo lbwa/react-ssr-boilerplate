@@ -32,17 +32,19 @@
     "url": "git+https://github.com/lbwa/react-ssr-boilerplate.git"
   },
   "scripts": {
+    "watch": "tsc -w -p tsconfig.json",
     "compile": "tsc -p tsconfig.json",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "dependencies": {
     "@babel/core": "^7.11.1",
-    "@lbwa/ssr-server": "^0.1.0",
     "@types/cross-spawn": "^6.0.2",
     "@types/fs-extra": "^9.0.1",
     "@types/mini-css-extract-plugin": "^0.9.1",
     "@types/optimize-css-assets-webpack-plugin": "^5.0.1",
     "@types/terser-webpack-plugin": "^4.1.0",
+    "@types/webpack-dev-server": "^3.11.0",
+    "@types/webpack-node-externals": "^2.5.0",
     "babel-loader": "^8.1.0",
     "babel-preset-react-app": "^9.1.2",
     "chalk": "^4.1.0",
