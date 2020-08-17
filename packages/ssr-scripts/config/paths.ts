@@ -1,9 +1,5 @@
-import path from 'path'
-import fs from 'fs'
+import defaultPaths, { resolveApp } from '@lbwa/ssr-shared/dist/paths'
 import { URL } from 'url'
-
-const appDir = fs.realpathSync(process.cwd())
-const resolveApp = (relativePath: string) => path.resolve(appDir, relativePath)
 
 const homepage: string = require(resolveApp(`package.json`)).homepage
 const publicUrl =
@@ -16,16 +12,8 @@ const publicUrl =
     : new URL(homepage || process.env.PUBLIC_URL || `/`).pathname
 
 export const moduleFileExtensions = [`js`, `jsx`, `ts`, `tsx`, `json`]
+
 export default {
-  dotenv: resolveApp(`.env`),
-  appPath: resolveApp(`.`),
-  appBuild: resolveApp(`dist`),
-  appPublic: resolveApp(`public`),
-  appHtml: resolveApp(`public/index.html`),
-  appSrc: resolveApp(`src`),
-  appEntry: resolveApp(`src/index`),
-  appPackageJson: resolveApp(`package.json`),
-  appTsConfig: resolveApp(`tsconfig.json`),
-  appNodeModules: resolveApp(`node_modules`),
+  ...defaultPaths,
   publicUrl
 }
