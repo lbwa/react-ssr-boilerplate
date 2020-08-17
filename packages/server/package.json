@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "@lbwa/ssr-server",
   "version": "0.1.0",
   "private": true,
   "description": "React.js server-side rendering server",
@@ -10,8 +10,8 @@
   "author": "lbwa <mr_lbw@outlook.com>",
   "homepage": "https://github.com/lbwa/react-ssr-boilerplate/tree/master/packages/server#readme",
   "license": "MIT",
-  "main": "dist/server.js",
-  "module": "dist/server.module.js",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
   "directories": {
     "lib": "dist",
     "test": "__tests__"
@@ -24,6 +24,8 @@
     "url": "git+https://github.com/lbwa/react-ssr-boilerplate.git"
   },
   "scripts": {
+    "watch": "tsc -p tsconfig.json -w",
+    "compile": "tsc -p tsconfig.json",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
@@ -31,5 +33,8 @@
   },
   "devDependencies": {
     "typescript": "^3.9.7"
+  },
+  "dependencies": {
+    "@lbwa/ssr-scripts": "^0.1.0"
   }
 }

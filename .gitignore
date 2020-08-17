@@ -29,3 +29,5 @@ lib
 # misc
 .DS_Store
 *.tsbuildinfo
+draft
+draft.*
