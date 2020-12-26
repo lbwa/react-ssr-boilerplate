@@ -12,6 +12,8 @@
     "watch": "lerna run --parallel --stream watch",
     "build": "lerna run --parallel --stream build",
     "lint": "prettier --write packages/**/*.{js,jsx,ts,tsx,json,css,scss,md}",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,scss,sass,less,md}\"",
+    "postinstall": "lerna bootstrap",
     "test": "exit 1"
   },
   "repository": {
@@ -52,7 +54,8 @@
     "singleQuote": true,
     "tabWidth": 2,
     "trailingComma": "none",
-    "useTabs": false
+    "useTabs": false,
+    "endOfLine": "lf"
   },
   "husky": {
     "hooks": {
